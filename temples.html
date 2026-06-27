@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Miles - Temples</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/utils.js" defer></script>
+    <script src="js/header.js"></script>
+    <script src="js/destination-cards.js"></script>
+    <script src="js/map-handler.js"></script> <!-- Removed defer -->
+    <!-- Google Maps API Script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYM_uFqPDel9gGYoD2lAeYKPifS3vzFKA&loading=async&libraries=marker&map_ids=36823e4af3921b9f58d140f9&callback=onGoogleMapsApiReady" async></script>
+</head>
+<body class="temples-page">
+    <header>
+        <!-- Header content will be dynamically inserted by header.js -->
+    </header>
+
+    <section class="section destination-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sacred Temples</h2>
+                <p>Explore spiritual destinations in and around Hyderabad</p>
+            </div>
+            
+            <!-- Updated to use the new card system -->
+            <div class="destination-cards-container" id="temples-container" data-destination-type="temple">
+                <!-- Cards will be dynamically inserted by destination-cards.js -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading temple destinations...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Will be populated by footer.js -->
+    </footer>
+    <script src="js/footer.js"></script>
+    
+    <!-- Fallback script if API fails -->
+    <script>
+        // Fallback data if API fails
+        const templeData = [
+            {
+                destination_id: "birla_mandir",
+                name: "Birla Mandir",
+                type: "temple",
+                description: "A stunning marble temple offering peace and spirituality, built by the Birla family with intricate carvings.",
+                image_path: "images/destinations/temples/birla_mandir.jpg",
+                location: "Khairatabad, Hyderabad"
+            },
+            {
+                destination_id: "chilkur_balaji",
+                name: "Chilkur Balaji Temple",
+                type: "temple",
+                description: "Known as the \"Visa Temple,\" this sacred site attracts devotees seeking blessings for travel and success.",
+                image_path: "images/destinations/temples/chilkur_balaji.jpg",
+                location: "Chilkur, Hyderabad"
+            },
+            {
+                destination_id: "jagannath_temple",
+                name: "Jagannath Temple",
+                type: "temple",
+                description: "A beautiful temple dedicated to Lord Jagannath, built in the traditional Kalinga style of architecture.",
+                image_path: "images/destinations/temples/jagannath_temple.jpg",
+                location: "Banjara Hills, Hyderabad"
+            }
+            // More temple data could be added here
+        ];
+        
+        // If API call fails, use the fallback data
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName.toLowerCase() === 'script') {
+                console.log('Script loading error, using fallback data');
+                if (window.destinationCards) {
+                    window.destinationCards.populate(
+                        document.getElementById('temples-container'), 
+                        templeData
+                    );
+                }
+            }
+        }, true);
+    </script>
+</body>
+</html>

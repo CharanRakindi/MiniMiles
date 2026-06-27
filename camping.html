@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Miles - Camping</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/header.js"></script>
+    <script src="js/destination-cards.js"></script>
+    <script src="js/map-handler.js"></script> <!-- Removed defer -->
+    <!-- Google Maps API Script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYM_uFqPDel9gGYoD2lAeYKPifS3vzFKA&loading=async&libraries=marker&map_ids=36823e4af3921b9f58d140f9&callback=onGoogleMapsApiReady" async></script>
+</head>
+<body class="camping-page">
+    <header>
+        <!-- Header content will be dynamically inserted by header.js -->
+    </header>
+
+    <section class="section destination-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Camping Destinations</h2>
+                <p>Discover the best camping spots for a weekend getaway</p>
+            </div>
+            
+            <!-- Updated to use the new card system -->
+            <div class="destination-cards-container" id="camping-container" data-destination-type="camping">
+                <!-- Cards will be dynamically inserted by destination-cards.js -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading camping destinations...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Will be populated by footer.js -->
+    </footer>
+    <script src="js/footer.js"></script>
+    
+    <!-- Fallback script if API fails -->
+    <script>
+        // Fallback data if API fails
+        const campingData = [
+            {
+                destination_id: "ananthagiri_hills",
+                name: "Ananthagiri Hills Camping",
+                type: "camping",
+                description: "Beautiful camping experience amidst green hills and coffee plantations with stargazing opportunities.",
+                image_path: "images/destinations/camping/ananthagiri_hills.jpg",
+                location: "Ananthagiri, Vikarabad"
+            },
+            {
+                destination_id: "lake_view_camp",
+                name: "Lake View Camping",
+                type: "camping",
+                description: "Peaceful lakeside camping with bonfire facilities and adventure activities like hiking and kayaking.",
+                image_path: "images/destinations/camping/lake_view_camp.jpg",
+                location: "Shamirpet, Hyderabad"
+            },
+            {
+                destination_id: "adventure_forest_camp",
+                name: "Adventure Forest Camp",
+                type: "camping",
+                description: "Wilderness camping experience with zip-lining, rappelling, and guided forest treks.",
+                image_path: "images/destinations/camping/adventure_forest_camp.jpg",
+                location: "Maredumilli, East Godavari"
+            }
+            // More camping data could be added here
+        ];
+        
+        // If API call fails, use the fallback data
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName.toLowerCase() === 'script') {
+                console.log('Script loading error, using fallback data');
+                if (window.destinationCards) {
+                    window.destinationCards.populate(
+                        document.getElementById('camping-container'), 
+                        campingData
+                    );
+                }
+            }
+        }, true);
+    </script>
+</body>
+</html>

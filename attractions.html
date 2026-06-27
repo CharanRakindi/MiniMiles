@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Miles - Attractions</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/utils.js" defer></script>
+    <script src="js/header.js"></script>
+    <script src="js/destination-cards.js"></script>
+    <script src="js/map-handler.js"></script> <!-- Removed defer -->
+    <!-- Google Maps API Script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYM_uFqPDel9gGYoD2lAeYKPifS3vzFKA&loading=async&libraries=marker&map_ids=36823e4af3921b9f58d140f9&callback=onGoogleMapsApiReady" async></script>
+</head>
+<body class="attractions-page">
+    <header>
+        <!-- Header content will be dynamically inserted by header.js -->
+    </header>
+
+    <section class="section destination-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Popular Attractions</h2>
+                <p>Explore the top attractions in and around Hyderabad</p>
+            </div>
+            
+            <!-- Updated to use the new card system -->
+            <div class="destination-cards-container" id="attractions-container" data-destination-type="attraction">
+                <!-- Cards will be dynamically inserted by destination-cards.js -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading attraction destinations...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Will be populated by footer.js -->
+    </footer>
+    <script src="js/footer.js"></script>
+    
+    <!-- Fallback script if API fails -->
+    <script>
+        // Fallback data if API fails
+        const attractionData = [
+            {
+                destination_id: "charminar",
+                name: "Charminar",
+                type: "attraction",
+                description: "Iconic monument and mosque with four grand arches and minarets, built in 1591.",
+                image_path: "images/destinations/attractions/charminar.jpg",
+                location: "Old City, Hyderabad"
+            },
+            {
+                destination_id: "golconda_fort",
+                name: "Golconda Fort",
+                type: "attraction",
+                description: "Majestic medieval fort with impressive acoustics and light shows in the evening.",
+                image_path: "images/destinations/attractions/golconda_fort.jpg",
+                location: "Golconda, Hyderabad"
+            },
+            {
+                destination_id: "hussain_sagar",
+                name: "Hussain Sagar Lake",
+                type: "attraction",
+                description: "Heart-shaped lake featuring a massive Buddha statue on an island in the center.",
+                image_path: "images/destinations/attractions/hussain_sagar.jpg",
+                location: "Tank Bund, Hyderabad"
+            }
+            // More attractions could be added here
+        ];
+        
+        // If API call fails, use the fallback data
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName.toLowerCase() === 'script') {
+                console.log('Script loading error, using fallback data');
+                if (window.destinationCards) {
+                    window.destinationCards.populate(
+                        document.getElementById('attractions-container'), 
+                        attractionData
+                    );
+                }
+            }
+        }, true);
+    </script>
+</body>
+</html>

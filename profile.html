@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Mini Miles</title>
+    <link rel="stylesheet" href="/minimiles/css/styles.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="/minimiles/css/profile.css?v=<?= time(); ?>">
+    <script src="/minimiles/js/header.js?v=<?= time(); ?>"></script>
+    <script src="/minimiles/js/utils.js?v=<?= time(); ?>"></script>
+    <script>
+        // Redirect to login if not authenticated
+        if (!sessionStorage.getItem('user')) {
+            window.location.replace('/minimiles/login.html');
+        }
+    </script>
+</head>
+<body>
+    <header></header>
+
+    <section class="section user-profile-section">
+        <h2>My Profile</h2>
+        
+        <div class="profile-container">
+            <div class="profile-info-container">
+                <img src="/minimiles/images/default-avatar.png" alt="Profile" class="profile-avatar" id="profile-avatar">
+                <div class="profile-details">
+                    <h3 id="profile-name">User Name</h3>
+                    <p id="profile-email">user@example.com</p>
+                </div>
+                
+                <button class="btn-login-style" id="edit-profile-btn">
+                    <span class="btn-icon">✍️</span>
+                    Edit Profile
+                </button>
+                
+                <div class="edit-profile-form" id="edit-profile-form">
+                    <h4>Edit Profile Information</h4>
+                    <div id="profile-update-message" class="form-message" style="display: none;"></div>
+                    <form id="update-profile-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="profile-photo">Profile Photo</label>
+                            <div class="profile-photo-container">
+                                <img src="/minimiles/images/default-avatar.png" alt="Profile Preview" class="profile-photo-preview" id="photo-preview">
+                                <div class="upload-controls">
+                                    <input type="file" id="profile-photo" name="profile_photo" accept="image/jpeg,image/png,image/gif,image/webp" class="file-input">
+                                    <label for="profile-photo" class="btn-login-style">
+                                        <span class="btn-icon">📸</span>
+                                        Choose Photo
+                                    </label>
+                                    <small>Max size: 2MB. Formats: JPEG, PNG, GIF, WEBP</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" name="full_name" placeholder="Your full name" required>
+                        </div>
+                        <button type="submit" class="btn-login-style">
+                            <span class="btn-icon">💾</span>
+                            Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="booking-history-container">
+                <h3>Your Bookings</h3>
+                <div class="bookings-upcoming">
+                    <h4>Upcoming Trips</h4>
+                    <ul id="upcoming-bookings-list">
+                        <li class="loading-item">Loading upcoming bookings...</li>
+                    </ul>
+                </div>
+                <div class="bookings-past">
+                    <h4>Past Trips</h4>
+                    <ul id="past-bookings-list">
+                        <li class="loading-item">Loading past bookings...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="ratingModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-button" id="closeRatingModal">×</span>
+                <h4 id="modal-title-destination-name">Rate Your Stay</h4>
+                <div id="modal-rating-message" class="form-message" style="display: none;"></div>
+                <form id="modalRatingForm">
+                    <input type="hidden" name="booking_id" id="modal-booking-id">
+                    <input type="hidden" name="resort_id" id="destination-id-rating-modal"> 
+                    <label for="modal-user-name">Your Name:</label>
+                    <input type="text" id="modal-user-name" name="user_name" placeholder="Enter your name" required>
+                    <label for="modal-rating-value">Rating:</label>
+                    <select id="modal-rating-value" name="rating" required>
+                        <option value="">Select Rating</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
+                        <option value="3">⭐⭐⭐ (3 - Good)</option>
+                        <option value="2">⭐⭐ (2 - Fair)</option>
+                        <option value="1">⭐ (1 - Poor)</option>
+                    </select>
+                    <label for="modal-review-text">Review (optional):</label>
+                    <textarea id="modal-review-text" name="review" placeholder="Share your experience..." rows="4"></textarea>
+                    <button type="submit" class="btn-login-style">
+                        <span class="btn-icon">⭐</span>
+                        Submit Rating
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer></footer>
+    <script src="/minimiles/js/footer.js?v=<?= time(); ?>"></script>
+    <script src="/minimiles/js/profile.js?v=<?= time(); ?>"></script>
+    <script src="/minimiles/js/rating-handler.js?v=<?= time(); ?>"></script>
+</body>
+</html>

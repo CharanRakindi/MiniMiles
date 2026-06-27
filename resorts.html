@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Miles - Resorts</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/header.js"></script>
+    <script src="js/destination-cards.js"></script>
+    <script src="js/map-handler.js"></script>
+    <!-- Google Maps API Script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYM_uFqPDel9gGYoD2lAeYKPifS3vzFKA&loading=async&libraries=marker&map_ids=36823e4af3921b9f58d140f9&callback=onGoogleMapsApiReady" async></script>
+</head>
+<body class="resorts-page">
+    <header>
+        <!-- Header content will be dynamically inserted by header.js -->
+    </header>
+
+    <section class="section destination-section">
+            <div class="section-header">
+                <h2>Weekend Resorts</h2>
+                <p>Find the perfect resort for your weekend getaway near Hyderabad</p>
+            </div>
+            
+            <!-- Make sure this ID matches what your JavaScript is looking for -->
+            <div class="destination-cards-container" id="resorts-container" data-destination-type="resort">
+                <!-- Cards will be dynamically inserted by destination-cards.js -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading resort destinations...</p>
+                </div>
+            </div>
+    </section>
+
+    <footer>
+        <!-- Will be populated by footer.js -->
+    </footer>
+    <script src="js/footer.js"></script>
+</body>
+</html>

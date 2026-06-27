@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destination Details - Mini Miles</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/detail.css">
+<script>
+let destinationCoords = null;
+
+window.setDestinationCoords = function(coords) {
+destinationCoords = coords;
+console.log("Destination coordinates set:", destinationCoords);
+};
+</script>
+<script src="js/utils.js"></script>
+<script src="js/header.js"></script>
+<script src="js/detail.js"></script>
+</head>
+<body class="detail-page">
+<header></header>
+
+<section class="detail-section">
+<!-- Hero Card -->
+<div class="detail-card hero-card">
+<div class="hero-image-container">
+<img src="images/placeholder.jpg" alt="Destination Image" class="hero-image" id="destination-image-main">
+<div class="hero-overlay">
+<span class="destination-type-badge" id="destination-type-main">Type</span>
+</div>
+</div>
+<div class="hero-content">
+<h1 id="destination-name-main">Destination Name</h1>
+<p id="destination-location" style="margin: 0; font-size: 1rem; color: var(--text-light);"></p>
+<div class="ratings">
+<span id="rating-value">4.5</span>
+<span id="num-reviews" style="margin-left: 8px;">(0 reviews)</span>
+</div>
+</div>
+</div>
+
+<!-- Overview Card -->
+<div class="detail-card overview-card">
+<div class="card-header">
+<h2><span class="card-icon">📋</span>About this destination</h2>
+</div>
+<div class="card-content">
+<div class="overview-price-container">
+<p id="destination-description-main">Detailed information about this destination will be loaded here...</p>
+<div class="destination-price-card">
+<div class="price-content">
+<span class="price-label">Price per Night</span>
+<div class="price-value-container">
+<svg class="rupee-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M6 3h12M6 7h12M6 11h6m-6 4h6m0 0l6 6m-6-6l6-6"/>
+</svg>
+<span class="price-value" id="destination-price">5000</span>
+</div>
+</div>
+</div>
+</div>
+<div class="distance-info" id="distance-info">
+<span class="distance-label">
+<svg class="distance-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M12 2a10 10 0 0 1 10 10c0 5.5-10 14-10 14S2 17.5 2 12A10 10 0 0 1 12 2z"/>
+<circle cx="12" cy="12" r="3"/>
+</svg>
+Distance from Hyderabad:
+</span>
+<span id="distance-value">N/A</span>
+</div>
+</div>
+</div>
+
+<!-- Location & Map Card -->
+<div class="detail-card location-card">
+<div class="card-header">
+<h2><span class="card-icon">📍</span>Location</h2>
+</div>
+<div class="card-content">
+<div id="map-container" class="map-container">
+<div id="destination-map"></div>
+</div>
+<button id="get-directions-btn" class="btn-login-style">
+<span class="btn-icon">🗺️</span>
+Get Directions
+</button>
+</div>
+</div>
+
+<!-- Booking Form Card -->
+<div class="detail-card booking-card">
+<div class="card-header">
+<h2><span class="card-icon">📅</span>Book Your Stay</h2>
+</div>
+<div class="card-content">
+<div id="booking-message-success" class="message success-message" style="display: none;"></div>
+<div id="booking-message-error" class="message error-message" style="display: none;"></div>
+<form id="booking-form" class="booking-form">
+<input type="hidden" name="destination" id="destination-field" value="">
+<div class="form-row">
+<div class="form-group">
+<label for="name">Full Name</label>
+<input type="text" id="name" name="name" required>
+</div>
+<div class="form-group">
+<label for="email">Email</label>
+<input type="email" id="email" name="email" required>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="check_in_date">Check-in Date</label>
+<input type="date" id="check_in_date" name="check_in_date" required>
+</div>
+<div class="form-group">
+<label for="check_out_date">Check-out Date</label>
+<input type="date" id="check_out_date" name="check_out_date">
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="guests">Number of Guests</label>
+<input type="number" id="guests" name="guests" min="1" value="1" required>
+</div>
+</div>
+<div class="form-group">
+<label for="notes">Special Requests (Optional)</label>
+<textarea id="notes" name="notes" rows="3" placeholder="Any special requirements or notes..."></textarea>
+</div>
+<button type="submit" class="btn-login-style" id="book-now-btn">
+Book Now
+</button>
+</form>
+</div>
+</div>
+
+<!-- Non-bookable Message Card -->
+<div class="detail-card non-bookable-card non-bookable-destination-message">
+<div class="card-header">
+<h2><span class="card-icon">🏛️</span>Visit & Explore</h2>
+</div>
+<div class="card-content">
+<p>This destination is perfect for sightseeing and exploration.</p>
+<p>No booking required - just visit and enjoy!</p>
+<p>You can leave a review below after your visit.</p>
+</div>
+</div>
+
+<!-- Rating Form Card -->
+<div class="detail-card rating-card">
+<div class="card-header">
+<h2><span class="card-icon">✍️</span>Rate This Place</h2>
+</div>
+<div class="card-content">
+<div id="rating-message" class="message success-message" style="display: none;"></div>
+<div id="rating-message" class="message error-message" style="display: none;"></div>
+<form id="rating-form" class="rating-form">
+<input type="hidden" name="resort_id" id="destination-id-field" value="">
+<div class="form-row">
+<div class="form-group">
+<label for="user-name">Your Name</label>
+<input type="text" id="user-name" name="user_name" required>
+</div>
+<div class="form-group">
+<label for="rating">Rating</label>
+<select id="rating" name="rating" required>
+<option value="">Select Rating</option>
+<option value="5">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
+<option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
+<option value="3">⭐⭐⭐ (3 - Good)</option>
+<option value="2">⭐⭐ (2 - Fair)</option>
+<option value="1">⭐ (1 - Poor)</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="review">Your Review (Optional)</label>
+<textarea id="review" name="review" rows="4" placeholder="Share your experience..."></textarea>
+</div>
+<button type="submit" class="btn-login-style">
+<span class="btn-icon">⭐</span>
+Submit Review
+</button>
+</form>
+</div>
+</div>
+
+<!-- Bookable Rating Message Card -->
+<div class="detail-card bookable-rating-card bookable-destination-message">
+<div class="card-header">
+<h2><span class="card-icon">📋</span>Review After Your Stay</h2>
+</div>
+<div class="card-content">
+<p>You can rate and review this destination after completing your stay.</p>
+<p>Check your booking history in your profile to submit reviews for past bookings.</p>
+</div>
+</div>
+</section>
+
+<footer></footer>
+
+<!-- Receipt Modal -->
+<div class="receipt-modal" id="receiptModal" style="display: none;">
+<div class="receipt-modal-content">
+<button class="receipt-close-btn">×</button>
+<div class="receipt-header">
+<h2>Booking Receipt</h2>
+</div>
+<div class="receipt-body">
+<div class="receipt-success">
+<span class="checkmark">✔</span>
+<p>Your booking has been confirmed!</p>
+</div>
+<div class="receipt-details">
+<div class="receipt-row">
+<span class="receipt-label">Booking ID:</span>
+<span class="receipt-value" id="receipt-booking-id-display"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Destination:</span>
+<span class="receipt-value" id="receipt-destination"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Guest Name:</span>
+<span class="receipt-value" id="receipt-guest-name"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Email:</span>
+<span class="receipt-value" id="receipt-guest-email"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Check-in Date:</span>
+<span class="receipt-value" id="receipt-check-in-date"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Check-out Date:</span>
+<span class="receipt-value" id="receipt-check-out-date"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Guests:</span>
+<span class="receipt-value" id="receipt-guests"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Price per Night:</span>
+<span class="receipt-value">₹<span id="receipt-price-per-night"></span></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Subtotal:</span>
+<span class="receipt-value">₹<span id="receipt-subtotal"></span></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Tax (5%):</span>
+<span class="receipt-value">₹<span id="receipt-tax"></span></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Total Cost:</span>
+<span class="receipt-value">₹<span id="receipt-total-cost"></span></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Booking Date:</span>
+<span class="receipt-value" id="receipt-booking-date"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Payment Method:</span>
+<span class="receipt-value" id="receipt-payment-method"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Property Contact:</span>
+<span class="receipt-value" id="receipt-contact"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Status:</span>
+<span class="receipt-value" id="receipt-status"></span>
+</div>
+<div class="receipt-row">
+<span class="receipt-label">Terms:</span>
+<span class="receipt-value">Cancellation free up to 48 hours before check-in. No pets allowed.</span>
+</div>
+<input type="hidden" id="receipt-booking-id">
+</div>
+</div>
+<div class="receipt-actions">
+<button class="btn-login-style receipt-btn primary">
+<span class="btn-icon">⬇️</span>
+Download
+</button>
+<button class="receipt-btn secondary">Close</button>
+</div>
+</div>
+</div>
+
+<!-- Rooms Full Modal -->
+<div class="receipt-modal" id="roomsFullModal" style="display: none;">
+<div class="receipt-modal-content">
+<button class="receipt-close-btn">×</button>
+<div class="receipt-header">
+<h2>Booking Unavailable</h2>
+</div>
+<div class="receipt-body">
+<div class="receipt-error">
+<span class="error-icon">✖</span>
+<p>Sorry, all rooms are fully booked for the selected dates.</p>
+</div>
+</div>
+<div class="receipt-actions">
+<button class="btn-login-style receipt-btn secondary">Close</button>
+</div>
+</div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const receiptModal = document.getElementById('receiptModal');
+const roomsFullModal = document.getElementById('roomsFullModal');
+const downloadBtn = document.querySelector('.receipt-btn.primary');
+const closeButtons = document.querySelectorAll('.receipt-close-btn, .receipt-btn.secondary');
+const receiptModalContent = document.querySelector('.receipt-modal-content');
+const getDirectionsBtn = document.getElementById('get-directions-btn');
+
+if (getDirectionsBtn) {
+getDirectionsBtn.addEventListener('click', () => {
+if (!destinationCoords) {
+alert('Map data not loaded. Please try again later.');
+console.error('Destination coordinates not available:', destinationCoords);
+return;
+}
+const origin = '17.385044,78.486671'; // Hyderabad coordinates
+const destination = `${destinationCoords.lat},${destinationCoords.lng}`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+window.open(directionsUrl, '_blank');
+});
+}
+
+if (downloadBtn && receiptModalContent) {
+downloadBtn.addEventListener('click', () => {
+html2canvas(receiptModalContent, { backgroundColor: null, scale: 2 }).then(canvas => {
+const link = document.createElement('a');
+link.href = canvas.toDataURL('image/png');
+link.download = 'booking-receipt.png';
+link.click();
+}).catch(error => {
+console.error('Error generating receipt image:', error);
+alert('Failed to download receipt. Please try again.');
+});
+});
+}
+
+closeButtons.forEach(button => {
+button.addEventListener('click', () => {
+receiptModal.style.display = 'none';
+roomsFullModal.style.display = 'none';
+});
+});
+
+receiptModal.addEventListener('click', (e) => {
+if (e.target === receiptModal) {
+receiptModal.style.display = 'none';
+}
+});
+
+roomsFullModal.addEventListener('click', (e) => {
+if (e.target === roomsFullModal) {
+roomsFullModal.style.display = 'none';
+}
+});
+});
+</script>
+
+<script src="js/rating-handler.js"></script>
+<script src="js/footer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYM_uFqPDel9gGYoD2lAeYKPifS3vzFKA&loading=async&libraries=marker&map_ids=36823e4af3921b9f58d140f9&callback=onGoogleMapsApiReady" async defer></script>
+</body>
+</html>

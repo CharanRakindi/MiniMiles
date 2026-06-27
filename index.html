@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Miles - Weekend Trip Planner</title>
+    
+    <!-- 
+    ======================================
+    RESOURCE LOADING & OPTIMIZATION
+    ======================================
+    -->
+    <!-- Preload the hero background image to improve LCP (Largest Contentful Paint) -->
+    <link rel="preload" href="images/hyd.jpeg" as="image" type="image/jpeg">
+    
+    <!-- Custom fonts for branding -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Styles and scripts -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/header.js"></script>
+    
+    <!-- 
+    ======================================
+    PERFORMANCE OPTIMIZATION
+    ======================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preload the hero background image for smoother user experience
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                const img = new Image();
+                img.onload = function() {
+                    heroSection.classList.add('loaded');
+                };
+                // Get the image URL directly from CSS
+                const imageUrl = getComputedStyle(heroSection).backgroundImage.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+                img.src = imageUrl;
+            }
+        });
+    </script>
+</head>
+<body class="homepage">
+    <!-- Dynamic header inserted by header.js -->
+    <header>
+        <!-- Content dynamically inserted -->
+    </header>
+
+    <!-- 
+    ======================================
+    HERO SECTION - SIMPLIFIED VERSION
+    ======================================
+    -->
+    <section class="hero-section">
+        <div class="hero-glow"></div>
+        <div class="hero-glow-secondary"></div>
+        <div class="hero-content">
+            <h1 class="hero-heading">Discover Your Next <span class="gradient-text">Weekend Getaway</span></h1>
+            <p class="hero-description">Explore breathtaking destinations around Hyderabad. Your adventure starts here.</p>
+            <!-- Hero CTA removed as requested -->
+        </div>
+    </section>
+
+    <footer>
+        <!-- Will be populated by footer.js -->
+    </footer>
+    <script src="js/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+# Ensure proper directory indexes
+Options -Indexes
+DirectoryIndex index.php index.html
+
+# Enable PHP parsing for .html files
+AddType application/x-httpd-php .html
+
+# Enable URL rewriting
+RewriteEngine On
+RewriteBase /
+
+# Prevent rewriting for existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Skip rewriting for minimiles directory (allow direct access to files)
+RewriteRule ^minimiles/ - [L]
+
+# Remove .html extension (external redirect)
+RewriteCond %{THE_REQUEST} \s/minimiles/([^.]+)\.html[\s?] [NC]
+RewriteRule ^minimiles/(.*) /minimiles/$1 [R=301,L]
+
+# Internally forward /minimiles/path to /minimiles/path.html
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^minimiles/(.*)$ minimiles/$1.html [L]
+
+# Remove .php extension (external redirect)
+RewriteCond %{THE_REQUEST} \s/minimiles/([^.]+)\.php[\s?] [NC]
+RewriteRule ^minimiles/(.*) /minimiles/$1 [R=301,L]
+
+# Internally forward /minimiles/path to /minimiles/path.php
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^minimiles/(.*)$ minimiles/$1.php [L]
+
+# Explicitly handle PHP files to avoid 500 errors
+RewriteRule ^minimiles/login\.php$ minimiles/login.php [L]
+RewriteRule ^minimiles/register\.php$ minimiles/register.php [L]
+RewriteRule ^minimiles/update_profile\.php$ minimiles/update_profile.php [L]
+
+# Specific page routes for minimiles
+RewriteRule ^minimiles/login/?$ minimiles/login.html [L]
+RewriteRule ^minimiles/register/?$ minimiles/register.html [L]
+RewriteRule ^minimiles/profile/?$ minimiles/profile.html [L] # Changed to profile.html
+RewriteRule ^minimiles/resorts/?$ minimiles/resorts.html [L]
+RewriteRule ^minimiles/temples/?$ minimiles/temples.html [L]
+RewriteRule ^minimiles/attractions/?$ minimiles/attractions.html [L]
+RewriteRule ^minimiles/camping/?$ minimiles/camping.html [L]
+RewriteRule ^minimiles/detail/?$ minimiles/detail.html [L]
+RewriteRule ^minimiles/contact-us/?$ minimiles/contact-us.html [L]
+RewriteRule ^minimiles/index/?$ minimiles/index.html [L]
+RewriteRule ^minimiles/?$ minimiles/index.html [L]
+
+# Prevent access to sensitive files/directories
+<FilesMatch "^\.env$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+RewriteRule ^minimiles/includes/ - [F,L]
+RewriteRule ^minimiles/models/ - [F,L]
