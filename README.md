@@ -94,7 +94,6 @@ minimiles/
 1. **Clone the repository** into your web server's document root:
    ```bash
    git clone https://github.com/CharanRakindi/MiniMiles.git
-   # Move or symlink into your XAMPP htdocs folder if needed
    ```
 
 2. **Create the database**:
