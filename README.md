@@ -26,7 +26,7 @@ A full-stack web application for discovering and booking weekend getaway destina
 
 | Layer      | Technology                        |
 |------------|-----------------------------------|
-| Frontend   | HTML5, CSS3, Vanilla JavaScript   |
+| Frontend   | HTML5, CSS3, JavaScript   |
 | Backend    | PHP                               |
 | Database   | MySQL                             |
 | Server     | Apache (XAMPP)                    |
